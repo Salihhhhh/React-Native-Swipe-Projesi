@@ -1,38 +1,57 @@
-import React from "react";
-import { Image, StyleSheet, View, SafeAreaView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Text, StyleSheet, View, SafeAreaView } from "react-native";
 
 import Swiper from "react-native-deck-swiper";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
-import data from "./data"; // verilerim burada json
-
 const swiperRef = React.createRef();
 
-const Card = ({ card }) => {
-  let gelen = "https://api.mevzu.app";
-  //console.log("gelen veriiii", card);
-  //console.log("salihhhhhhhh", card.user_1_photo_link);
-  //console.log(card.user_2_photo_link);
-  return (
-    <View style={styles.card}>
-      <Image
-        source={{ uri: gelen + card.user_1_photo_link }}
-        style={styles.cardImage}
-      />
-      <Image
-        source={{ uri: gelen + card.user_2_photo_link }}
-        style={styles.cardImage}
-      />
-    </View>
-  );
-};
-
 export default function App() {
+  const sart = 0;
   const [index, setIndex] = React.useState(0);
+  const [users, setUsers] = useState([]);
+
+  console.log("sıraraaa", index);
+  // console.log("qqqqqqqqaaaaaaaaa ",users[0].user_1_full_name);
+  useEffect(() => {
+    fetch("https://api.mevzu.app/api/bundle/temp/?format=json")
+      .then((res) => {
+        if (res.ok && res.status === 200) {
+          return res.json();
+        }
+      })
+      .then((users) => setUsers(users.meta_data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const onSwiped = () => {
-    setIndex((index + 1) % data.length);
+    setIndex((index + 1) % users.length);
     // console.log(data[index+1])
+  };
+
+  const Card = ({ card }) => {
+    let gelen = "https://api.mevzu.app";
+    console.log("ğüüüüüüüüüüüü", users);
+    if (card) {
+      //console.log("isimimmim", card.user_1_full_name);
+      return (
+        <View style={styles.card} key={card.id}>
+          <Image
+            source={{ uri: gelen + card.user_1_photo_link }}
+            style={styles.cardImage}
+          />
+          <Image
+            source={{ uri: gelen + card.user_2_photo_link }}
+            style={styles.cardImage}
+          />
+          <Text>{card.user_1_full_name} </Text>
+          <Text>{card.user_2_full_name}</Text>
+          
+        </View>
+      );
+    }
+    //console.log("salihhhhhhhh", card.user_1_photo_link);
+    //console.log(card.user_2_photo_link);
   };
 
   return (
@@ -40,7 +59,7 @@ export default function App() {
       <View style={styles.swiperContainer}>
         <Swiper
           ref={swiperRef}
-          cards={data}
+          cards={users}
           cardIndex={index}
           renderCard={(card) => <Card card={card} />}
           infinite
