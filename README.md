@@ -1,7 +1,7 @@
 # React-Native-Swipe-Projesi
 React Native ile swipe(sola-sağa atmak) mekanigi
 
-![projeyi calı olarak expo snack linkinden test edebilirsiniz](https://snack.expo.dev/@mehmet_salih/react-native-swipe-projesi)
+![testlinki](https://snack.expo.dev/@mehmet_salih/react-native-swipe-projesi)
 
 
 ![arayüz1](https://github.com/Salihhhhh/React-Native-Swipe-Projesi/blob/main/image/aray%C3%BCz.png)
